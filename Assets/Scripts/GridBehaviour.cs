@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Both creates and maintains the grid.
+
 public class GridBehaviour : MonoBehaviour {
     [SerializeField] private int width;
     [SerializeField] private int height;
@@ -14,7 +16,7 @@ public class GridBehaviour : MonoBehaviour {
     {
         get { return tiles; }
     }
-
+    //Properties don't show up in the unity inspector so have to have an underlying variable.
     public int Width
     {
         get { return width; }
@@ -23,21 +25,23 @@ public class GridBehaviour : MonoBehaviour {
     {
         get { return height; }
     }
-	// Use this for initialization
+
 	void Start () {
         CreateGrid();
 	}
 	
-	// Update is called once per frame
 	void Update () {
 		
 	}
 
+    //Creates all the tiles.
+    //Also setups the colortiles
+    //This is very slow becuase gameobjects are quite slow and the program will crash if you create to many tiles at once.
+    //Want to try to use something other then the tiles in the future and see if that speeds things up.
     void CreateGrid()
     {
         offset = RescaleOffset();
         Vector2 spawnPosition = GetMiddlePos();
-        FindObjectOfType<CameraMovement>().CameraMovementSpeed = offset;
         tiles = new MyTile[width, height];
         for(int i = 0; i < height; i++)
         {
@@ -52,14 +56,16 @@ public class GridBehaviour : MonoBehaviour {
             }
         }
     }
-
-
-    float RescaleOffset() // assumes that tile is a square
+    
+    //Assumes that tile is a square
+    //Basically calculates the distance between two squares so we can use it as an offset when we create the grid.
+    float RescaleOffset() 
     {
-        float scale = tile.transform.localScale.y *baseOffset;
+        float scale = tile.transform.localScale.y * baseOffset;
         return scale;
     }
 
+    //Gets the center position of the grid.
     Vector2 GetMiddlePos()
     {
         int x = width / 2;
@@ -67,7 +73,9 @@ public class GridBehaviour : MonoBehaviour {
         Vector2 pos = new Vector2(x * offset, y * offset);
         return pos*-1;
     }
-
+    
+    //This is extremly bad and needs to be redone.
+    //Takes forever and might crash the entire appliction.
     public void RescaleGrid(int width, int height)
     {
         foreach(Transform t in tileHolder)

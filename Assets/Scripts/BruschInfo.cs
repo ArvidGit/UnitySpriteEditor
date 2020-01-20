@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//BruschInfo is used to store information on which tile has been pressed and is used when the brusches paint.
+// It contains the tiles x and y position. The entire grid is needed since some brusches color neigbouring tiles.
+//And lastly currentcolor is which color to be used.
 public struct BruschInfo{
 
     public readonly int xPos;

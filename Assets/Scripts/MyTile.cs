@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Contains basic info about the tile.
 public struct MyTile{
 
     public readonly GameObject tile;

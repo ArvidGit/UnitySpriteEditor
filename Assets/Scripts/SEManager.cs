@@ -2,15 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Brusches
-{
-    Standard,
-    Double,
-    Triple,
-    Fill,
-    index
-}
-
+//Sprite editor manager
 public class SEManager : MonoBehaviour {
     [SerializeField] private Transform tileHolder;
     private GridBehaviour grid;
@@ -35,18 +27,13 @@ public class SEManager : MonoBehaviour {
         get { return grid; }
     }
 
-	// Use this for initialization
 	void Awake () {
         CurrentColor = Color.white;
         grid = FindObjectOfType<GridBehaviour>();
         currentBrusch = new StandardBrusch();
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
+    //Resets all the colors of the tiles to white
     public void ResetColors()
     {
         foreach(Transform t in tileHolder)
@@ -54,6 +41,8 @@ public class SEManager : MonoBehaviour {
             t.GetComponent<ColorTile>().ResetColor();
         }
     }
+
+    //Sets the alpha value of each tile to the opposite of the current one
     public void FullAlpha(int a)
     {
         foreach (Transform t in tileHolder)
@@ -62,15 +51,19 @@ public class SEManager : MonoBehaviour {
         }
     }
 
+    //Calls the save manager to save a png
     public void Save()
     {
         FindObjectOfType<SaveManager>().Save(grid.Height, grid.Width, tileHolder);
     }
+
+    //Calls load manager to load a specific png
     public void Load()
     {
         GetComponent<LoadManager>().Load();
     }
-
+    
+    //Creates a bruschinfo objext that stores all info needed to paint a tile.
     public void OnMousePress(ColorTile colorTile)
     {
         BruschInfo bruschInfo = new BruschInfo((int)colorTile.Tile.gridPos.x, (int)colorTile.Tile.gridPos.y,  grid, CurrentColor);
@@ -79,25 +72,7 @@ public class SEManager : MonoBehaviour {
 
     public void ChangeBrusch(int index)
     {
-        Brusches b = (Brusches)index;
-        switch (b)
-        {
-            case Brusches.Standard:
-                currentBrusch = new StandardBrusch();
-                break;
-            case Brusches.Double:
-                currentBrusch = new DoubleBrusch(1);
-                break;
-            case Brusches.Triple:
-                currentBrusch = new DoubleBrusch(2);
-                break;
-            case Brusches.Fill:
-                currentBrusch = new FillBrusch();
-                break;
-            default:
-                currentBrusch = new StandardBrusch();
-                break;
-        }
+        currentBrusch = BruschFactory.GetBrusch(index);
     }
 
 }

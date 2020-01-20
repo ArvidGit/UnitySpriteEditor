@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//Has all the UI components in it.
+//This should probably be refactored in to smaller classes.
+//Sets all the refernces for the different UI elements in the scene.
 public class UIManager : MonoBehaviour {
     [SerializeField] private Button resetButton;
     [SerializeField] private Button UpButton;
@@ -16,18 +19,16 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private Button loadButton;
     [SerializeField] private Dropdown bruschesDropdown;
     private bool fullAlpha = false;
-    string hej = "";
     private SEManager semanager;
-
-	// Use this for initialization
+    
 	void Start () {
         CameraMovement cam = FindObjectOfType<CameraMovement>();
         semanager = GetComponent<SEManager>();
         resetButton.onClick.AddListener(delegate { semanager.ResetColors(); });
-        UpButton.onClick.AddListener(() => cam.MoveCamera(Vector3.up));
-        DownButton.onClick.AddListener(() => cam.MoveCamera(Vector3.down));
-        RightButton.onClick.AddListener(() => cam.MoveCamera(Vector3.right));
-        LeftButton.onClick.AddListener(() => cam.MoveCamera(Vector3.left));
+        UpButton.onClick.AddListener(() => cam.MoveCameraWithUI(Vector3.up));
+        DownButton.onClick.AddListener(() => cam.MoveCameraWithUI(Vector3.down));
+        RightButton.onClick.AddListener(() => cam.MoveCameraWithUI(Vector3.right));
+        LeftButton.onClick.AddListener(() => cam.MoveCameraWithUI(Vector3.left));
         fullAlphaButton.onClick.AddListener(delegate { int a = fullAlpha ? 1 : 0; fullAlpha = !fullAlpha;  semanager.FullAlpha(a); });
 
         GridBehaviour grid = FindObjectOfType<GridBehaviour>();
@@ -54,7 +55,6 @@ public class UIManager : MonoBehaviour {
         bruschesDropdown.ClearOptions();
         bruschesDropdown.AddOptions(m_DropOptions);
     }
-
-    // Update is called once per frame
+    
 
 }

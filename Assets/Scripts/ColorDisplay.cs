@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//Part of the UI. This script handles the creation of the color Display.
 public class ColorDisplay : MonoBehaviour {
     [SerializeField] private Button showColors;
     [SerializeField] private GameObject colorDisplay;
@@ -22,6 +23,8 @@ public class ColorDisplay : MonoBehaviour {
         showColors.onClick.AddListener(() => colorDisplay.SetActive(!colorDisplay.activeSelf));
     }
 
+    //Makes sure all colors are fully visible since unity seems to set the alpha to zero
+    //When picking colors in the color wheel.
     void SetAlphaToOne()
     {
         for(int i = 0; i < colors.Length; i++)
@@ -30,6 +33,7 @@ public class ColorDisplay : MonoBehaviour {
         }
     }
 
+    //Creates the buttons that you can pick colors on
     void CreateColors()
     {
         foreach(Color c in colors)
@@ -40,6 +44,8 @@ public class ColorDisplay : MonoBehaviour {
         }
     }
 
+    //When a color button is pressed the current color is changed 
+    //Here a refernce is set so the sprite editor manager changes the current color
     void SetColorRefrence(Color c)
     {
         seManager.CurrentColor = c;
@@ -47,6 +53,7 @@ public class ColorDisplay : MonoBehaviour {
         showColors.GetComponent<Image>().color = c;
     }
 
+    //A color that has full transpancy is added tp the color list.
     void AddFullAlphaColor()
     {
         GameObject temp = Instantiate(colorButtons, colorPanel);
